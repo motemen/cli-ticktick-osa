@@ -11,7 +11,8 @@ type Result = {
 interface Task {
   title: string;
   priority: number;
-  items: { title: string; status: number }[];
+  sortOrder: number;
+  items: { title: string; status: number; sortOrder: number; }[];
 }
 
 function highlightLinks(s: string, useColor = true): string {
@@ -38,6 +39,7 @@ result.forEach(({ name, tasks }, i) => {
   if (i > 0) console.log("");
   console.log(chalk.underline.bold(`# ${name}`));
 
+  tasks.sort((a, b) => b.sortOrder - a.sortOrder);
   tasks.forEach(({ title, priority, items }) => {
     const marker =
       {
@@ -45,6 +47,7 @@ result.forEach(({ name, tasks }, i) => {
         3: chalk.bold.yellow("*"),
       }[priority] ?? "-";
     console.log(`${marker} ${title}`);
+    items.sort((a, b) => b.sortOrder - a.sortOrder);
     items.forEach(({ title, status }) => {
       if (status === 1) {
         console.log(chalk.grey(`    x ${highlightLinks(title, false)}`));
