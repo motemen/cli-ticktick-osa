@@ -17,7 +17,7 @@ interface Task {
 
 function highlightLinks(s: string, useColor = true): string {
   return s.replace(
-    /\[([^]+)\]\(([^)]+)\)|(https?:\/\/[a-z0-9/%.]+)/gi,
+    /\[([^]+)\]\(([^)]+)\)|(https?:\/\/[a-z0-9/%.?=]+)/gi,
     (_, title, url, bareURL) =>
       bareURL
         ? (useColor ? chalk.blue : chalk).underline(bareURL)
@@ -49,10 +49,10 @@ result.forEach(({ name, tasks }, i) => {
     console.log(`${marker} ${title}`);
     items.sort((a, b) => b.sortOrder - a.sortOrder);
     items.forEach(({ title, status }) => {
-      if (status === 1) {
+      if (status > 0) {
         console.log(chalk.grey(`    x ${highlightLinks(title, false)}`));
       } else {
-        console.log(`    - ${highlightLinks(title)}`);
+        console.log(`    o ${highlightLinks(title)}`);
       }
     });
   });

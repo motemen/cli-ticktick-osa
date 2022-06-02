@@ -6,7 +6,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "esbuild --outdir=dist --bundle --platform=node src/next7d.ts"
+    "build": "esbuild --outdir=dist --bundle --platform=node src/next7d.ts",
+    "start": "node --loader ts-node/esm src/next7d.ts"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.20.0",
