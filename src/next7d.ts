@@ -12,26 +12,18 @@ interface Task {
   title: string;
   priority: number;
   sortOrder: number;
-  items: { title: string; status: number; sortOrder: number; }[];
+  items: { title: string; status: number; sortOrder: number }[];
 }
 
 function highlightLinks(s: string, useColor = true): string {
-  return s.replace(
-    /\[([^]+)\]\(([^)]+)\)|(https?:\/\/[a-z0-9/%.?=]+)/gi,
-    (_, title, url, bareURL) =>
-      bareURL
-        ? (useColor ? chalk.blue : chalk).underline(bareURL)
-        : `${(useColor ? chalk.green : chalk).underline(title)} ` +
-          `${(useColor ? chalk.blue : chalk).underline(url)}`
+  return s.replace(/\[([^]+)\]\(([^)]+)\)|(https?:\/\/[a-z0-9/%.?=]+)/gi, (_, title, url, bareURL) =>
+    bareURL
+      ? (useColor ? chalk.blue : chalk).underline(bareURL)
+      : `${(useColor ? chalk.green : chalk).underline(title)} ` + `${(useColor ? chalk.blue : chalk).underline(url)}`
   );
 }
 
-const { stdout } = execaSync("osascript", [
-  "-l",
-  "JavaScript",
-  "-e",
-  'Application("TickTick").next7daysTasks()',
-]);
+const { stdout } = execaSync("osascript", ["-l", "JavaScript", "-e", 'Application("TickTick").next7daysTasks()']);
 
 const result = JSON.parse(stdout) as unknown as Result;
 
@@ -47,7 +39,7 @@ result.forEach(({ name, tasks }, i) => {
         3: chalk.bold.yellow("*"),
       }[priority] ?? "-";
     console.log(`${marker} ${title}`);
-    items.sort((a, b) => b.sortOrder - a.sortOrder);
+    items.sort((a, b) => a.sortOrder - b.sortOrder);
     items.forEach(({ title, status }) => {
       if (status > 0) {
         console.log(chalk.grey(`    x ${highlightLinks(title, false)}`));
