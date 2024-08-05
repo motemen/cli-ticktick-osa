@@ -16,7 +16,7 @@ interface Task {
 }
 
 function highlightLinks(s: string, useColor = true): string {
-  return s.replace(/\[([^]+)\]\(([^)]+)\)|(https?:\/\/[a-z0-9/%.?=]+)/gi, (_, title, url, bareURL) =>
+  return s.replace(/\[([^]+)\]\(([^)]+)\)|(https?:\/\/[a-z0-9/%.?=-]+)/gi, (_, title, url, bareURL) =>
     bareURL
       ? (useColor ? chalk.blue : chalk).underline(bareURL)
       : `${(useColor ? chalk.green : chalk).underline(title)} ` + `${(useColor ? chalk.blue : chalk).underline(url)}`
